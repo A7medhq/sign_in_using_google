@@ -1,5 +1,6 @@
-import 'package:convex_bottom_bar/convex_bottom_bar.dart';
+import 'package:convex_bottom_navigation_bar/google_sign_in_api.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,65 +25,61 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
-
-
-
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
-  int selectedIndex= 1;
+  Future signInWithGoogle() async {
+    GoogleSignInApi.login();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('ConvexAppBar'),centerTitle: true,),
-      body: const Center(
-          child: Text(
-           'ConvexAppBar'),),
-      bottomNavigationBar: StyleProvider(
-        style: Style(),
-        child: ConvexAppBar(
-          style: TabStyle.reactCircle,
-          backgroundColor: Colors.white,
-          activeColor: Colors.lightGreen.shade200,
-          color: Colors.grey,
-          height: 80,
-          top: -30,
-          curveSize: 90,
-
-          items:  [
-            TabItem(icon:  Icon(Icons.home,color: selectedIndex == 0 ? Colors.lightGreen: Colors.grey,),title: 'Home'),
-            TabItem(icon: Icon(Icons.location_on,color: selectedIndex == 1 ? Colors.lightGreen: Colors.grey,),title: 'Address' ),
-            TabItem(icon:  Icon(Icons.list,color: selectedIndex == 2 ? Colors.lightGreen: Colors.grey,),title: 'My Order' ),
-            TabItem(icon: Icon(Icons.call,color: selectedIndex == 3 ? Colors.lightGreen: Colors.grey,),title: 'Contact us' ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            const Text(
+              'Login',
+              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+            ),
+            Column(
+              children: [
+                Material(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(12),
+                  child: InkWell(
+                    onTap: signInWithGoogle,
+                    borderRadius: BorderRadius.circular(12),
+                    child: const SizedBox(
+                      width: 300,
+                      height: 60,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(
+                            'Sign in with google',
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Icon(
+                            FontAwesomeIcons.google,
+                            color: Colors.white,
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            )
           ],
-          initialActiveIndex: 1,
-          onTap: (int i) {
-            setState(() {
-    selectedIndex = i;
-            });
-    }
-
         ),
       ),
     );
-  }
-}
-class Style extends StyleHook {
-  @override
-  double get activeIconSize => 40;
-
-  @override
-  double get activeIconMargin => 15;
-
-  @override
-  double get iconSize => 30;
-
-  @override
-  TextStyle textStyle(Color color, String? fontFamily) {
-    return TextStyle(fontSize: 14, color: color);
   }
 }
